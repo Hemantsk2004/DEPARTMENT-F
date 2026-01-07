@@ -7,16 +7,18 @@ import {
 import { ApiResponse, QueryParams } from "../types/api";
 
 export const materialService = {
+  // GET materials by course
   getMaterialsByCourse: async (
     courseId: string,
     params?: QueryParams
   ): Promise<ApiResponse<Material[]>> => {
-    const response = await axios.get(`/materials/${courseId}`, {
+    const response = await axios.get(`/api/materials/${courseId}`, {
       params,
     });
     return response.data;
   },
 
+  // UPLOAD material
   uploadMaterial: async (
     courseId: string,
     data: CreateMaterialData
@@ -26,23 +28,30 @@ export const materialService = {
       formData.append(key, value instanceof File ? value : String(value));
     });
 
-    const response = await axios.post(`/materials/${courseId}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axios.post(
+      `/api/materials/${courseId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
     return response.data;
   },
 
+  // DELETE material
   deleteMaterial: async (id: string): Promise<ApiResponse<void>> => {
-    const response = await axios.delete(`/materials/${id}`);
+    const response = await axios.delete(`/api/materials/${id}`);
     return response.data;
   },
 
+  // GET material by ID
   getMaterialById: async (
     id: string
   ): Promise<ApiResponse<MaterialWithDetails>> => {
-    const response = await axios.get(`/materials/${id}`);
+    const response = await axios.get(`/api/materials/${id}`);
     return response.data;
   },
 };
