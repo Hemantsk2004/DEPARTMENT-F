@@ -8,36 +8,41 @@ import {
 } from "../types/user";
 
 export const authService = {
+  // LOGIN
   login: async (
     credentials: LoginCredentials
   ): Promise<ApiResponse<AuthResponse>> => {
-    const response = await axios.post("/auth/login", credentials);
+    const response = await axios.post("/api/auth/login", credentials);
     return response.data;
   },
 
+  // REGISTER
   register: async (data: RegisterData): Promise<AuthResponse> => {
-    const response = await axios.post("/auth/register", data);
+    const response = await axios.post("/api/auth/register", data);
     return response.data;
   },
 
+  // UPDATE USER
   updateUser: async (
     id: string,
     data: Partial<User>
   ): Promise<ApiResponse<User>> => {
-    const response = await axios.put(`/users/${id}`, data);
+    const response = await axios.put(`/api/users/${id}`, data);
     return response.data;
   },
 
+  // LOGOUT
   logout: async (): Promise<void> => {
     try {
-      await axios.post("/auth/logout");
+      await axios.post("/api/auth/logout");
     } finally {
       localStorage.removeItem("token");
     }
   },
 
+  // VERIFY TOKEN
   verifyToken: async (token: string): Promise<ApiResponse<User>> => {
-    const response = await axios.get("/auth/verify", {
+    const response = await axios.get("/api/auth/verify", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
