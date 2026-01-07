@@ -45,8 +45,8 @@ export default function Register() {
 
     try {
       await register(formData);
-      router.push("/dashboard");
       toast.success("Account created succesfully 🎉🎉🎉 ");
+      router.push("/login");
     } catch (err) {
       setError("Failed to create an account. Please try again.");
       console.error(err);
