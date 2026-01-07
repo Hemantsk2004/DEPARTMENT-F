@@ -16,9 +16,9 @@ export const authService = {
     return response.data;
   },
 
-  // REGISTER
+  // REGISTER (CORRECT ROUTE)
   register: async (data: RegisterData): Promise<AuthResponse> => {
-    const response = await axios.post("/api/auth/register", data);
+    const response = await axios.post("/api/auth/signup", data);
     return response.data;
   },
 
