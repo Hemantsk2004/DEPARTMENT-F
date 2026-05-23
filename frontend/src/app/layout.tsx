@@ -1,18 +1,13 @@
-/* eslint-disable @next/next/no-sync-scripts */
-
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import { ToastContainer } from "react-toastify";
-
-const inter = Inter({ subsets: ["latin"] });
+import "react-toastify/dist/ReactToastify.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Campus connect - Learning Management System",
+  title: "CampusLink X — Academic & Career Collaboration",
   description:
-    "A platform for students and lecturers to connect and share course materials",
+    "An AI-powered academic and career collaboration platform for students, lecturers, and institutions.",
 };
 
 export default function RootLayout({
@@ -22,20 +17,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-      </head>
-      <body className={inter.className}>
+      <body>
         <AuthProvider>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-grow bg-gray-50 justify-center items-center">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          {children}
         </AuthProvider>
-        <ToastContainer />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          theme="dark"
+          toastStyle={{
+            background: "#111827",
+            border: "1px solid rgba(255,255,255,0.06)",
+            color: "#f1f5f9",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "14px",
+          }}
+        />
       </body>
     </html>
   );

@@ -24,7 +24,7 @@ export default function ProfilePage() {
   }, [user]);
 
   const handleChange = (
-    e: React.ChangeEvent<
+    e: React.ChangeEvent
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
@@ -39,21 +39,19 @@ export default function ProfilePage() {
 
     try {
       const response = await authService.updateUser(user!._id, formData);
-      // @ts-expect-error it keep giving the error
+      // @ts-expect-error it keeps giving the error
       setUser((prevData) => ({ ...prevData, ...formData }));
       if (response.success) {
-        toast.success("successfully updated profile");
+        toast.success("Profile updated successfully");
       }
-      console.log(response);
     } catch (err) {
       setError("Failed to update user details.");
+      toast.error("Failed to update profile");
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
-
-  if (error) <div className="text-red-500">{error}</div>;
 
   return (
     <div>
@@ -79,6 +77,13 @@ export default function ProfilePage() {
           {/* Main content */}
           <div className="p-6 md:w-2/3">
             <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
+
+            {/* Bug 5 fix: error now actually renders */}
+            {error && (
+              <div className="bg-red-50 text-red-500 p-3 rounded-md mb-4">
+                {error}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">
@@ -109,20 +114,6 @@ export default function ProfilePage() {
                     onChange={handleChange}
                   />
                 </div>
-
-                {/* <div>
-                  <label htmlFor="bio" className="form-label">
-                    Bio
-                  </label>
-                  <textarea
-                    id="bio"
-                    name="bio"
-                    rows={6}
-                    className="form-input border rounded-md p-2 w-full"
-                    value={formData.bio}
-                    onChange={handleChange}
-                  />
-                </div> */}
               </div>
 
               <div className="flex justify-end">

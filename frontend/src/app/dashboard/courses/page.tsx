@@ -20,6 +20,7 @@ export default function CoursesPage() {
         setCourses(response.data);
       } catch (error) {
         console.error("Error fetching courses:", error);
+        toast.error("Failed to load courses");
       } finally {
         setLoading(false);
       }
@@ -32,10 +33,8 @@ export default function CoursesPage() {
 
   const handleEnroll = async (courseId: string) => {
     try {
-      const response = await courseService.enrollStudent(courseId);
-      console.log("handleEnroll", response);
-
-      toast.success("Course enrolled successfully");
+      await courseService.enrollStudent(courseId);
+      toast.success("Enrolled successfully");
       setCourses((prevCourses) =>
         prevCourses.map((course) =>
           course._id === courseId
@@ -48,31 +47,31 @@ export default function CoursesPage() {
             : course
         )
       );
-    } catch (err) {
-      console.log("err", err);
+    } catch (err: any) {
+      const message = err?.response?.data?.message || "Failed to enroll";
+      toast.error(message);
     }
   };
 
   const handleDisenroll = async (courseId: string) => {
     try {
-      const response = await courseService.disenrollStudent(courseId);
-      console.log("handleDisenroll", response);
-
-      toast.info("Course disenrolled successfully");
+      await courseService.disenrollStudent(courseId);
+      toast.info("Disenrolled successfully");
       setCourses((prevCourses) =>
         prevCourses.map((course) =>
           course._id === courseId
             ? ({
                 ...course,
                 students: Array.isArray(course.students)
-                  ? course.students.filter((id) => id !== user!._id)
+                  ? course.students.filter((id) => String(id) !== user!._id)
                   : [],
               } as Course)
             : course
         )
       );
-    } catch (err) {
-      console.log("err", err);
+    } catch (err: any) {
+      const message = err?.response?.data?.message || "Failed to disenroll";
+      toast.error(message);
     }
   };
 
@@ -122,9 +121,11 @@ export default function CoursesPage() {
       ) : filteredCourses.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCourses.map((course) => {
-            const isEnrolled = course.students
-              ? (course.students as string[]).includes(user!._id)
+            // Bug 4 fix: convert ObjectId to string before comparing
+            const isEnrolled = Array.isArray(course.students)
+              ? course.students.some((id) => String(id) === user!._id)
               : false;
+
             return (
               <CourseCard
                 key={course._id}

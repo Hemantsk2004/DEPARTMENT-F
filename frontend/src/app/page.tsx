@@ -1,152 +1,239 @@
 import Link from "next/link";
-import Image from "next/image";
-import UniOfIbadan from "@/assets/images/university-of-ibadan.png";
 
-export default function Home() {
+const features = [
+  {
+    icon: "🤖",
+    title: "AI Study Assistant",
+    desc: "Upload notes, get instant summaries, key points, and revision guides powered by Gemini AI.",
+    color: "#3b82f6",
+    bg: "rgba(59,130,246,0.08)",
+  },
+  {
+    icon: "💬",
+    title: "Real-time Study Rooms",
+    desc: "Create or join study rooms, collaborate with peers, and solve doubts together in real time.",
+    color: "#8b5cf6",
+    bg: "rgba(139,92,246,0.08)",
+  },
+  {
+    icon: "🚀",
+    title: "Career Opportunities",
+    desc: "Browse internships, hackathons, and placements posted by mentors and campus recruiters.",
+    color: "#10b981",
+    bg: "rgba(16,185,129,0.08)",
+  },
+  {
+    icon: "🧑‍💼",
+    title: "Student Portfolios",
+    desc: "Build your professional profile with skills, projects, GitHub, and LinkedIn — all in one place.",
+    color: "#f59e0b",
+    bg: "rgba(245,158,11,0.08)",
+  },
+];
+
+const stats = [
+  { value: "10K+", label: "Students" },
+  { value: "500+", label: "Courses" },
+  { value: "200+", label: "Opportunities" },
+  { value: "50+", label: "Institutions" },
+];
+
+export default function LandingPage() {
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="md:w-1/2 mb-10 md:mb-0">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 max-w-3xl">
-                Transform Your Educational Experience
-              </h1>
-              <p className="text-xl mb-8 max-w-xl">
-                Connect, learn, and grow with Campus connect - the ultimate
-                platform for students and lecturers.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/register"
-                  className="btn-primary text-center px-6 py-3 rounded-md bg-white text-blue-600 hover:bg-gray-200 transition duration-200"
-                >
-                  Get Started
-                </Link>
-                <Link
-                  href="/"
-                  className="text-white btn text-center border border-white px-6 py-3 rounded-md transition duration-200"
-                >
-                  Learn More
-                </Link>
-              </div>
-            </div>
-            <div className="md:w-1/2">
-              <Image
-                src={UniOfIbadan}
-                alt="Education Platform"
-                width={600}
-                height={400}
-                className="rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Why Choose Campus connect?
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="card p-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">
-                Comprehensive Course Management
-              </h3>
-              <p className="text-gray-600">
-                Easily access and manage course materials for all your classes
-                in one place.
-              </p>
-            </div>
-            <div className="card p-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Role-Based Access</h3>
-              <p className="text-gray-600">
-                Specifically designed interfaces for both students and
-                lecturers, ensuring optimal experience.
-              </p>
-            </div>
-            <div className="card p-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">
-                Seamless File Sharing
-              </h3>
-              <p className="text-gray-600">
-                Upload and access course materials in any format with our
-                flexible file management system.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-16 bg-blue-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">
-            Ready to enhance your educational journey?
-          </h2>
-          <p className="text-xl mb-14 max-w-2xl mx-auto">
-            Join thousands of students and lecturers already using Campus
-            connect to streamline their educational experience.
-          </p>
-          <Link
-            href="/register"
-            className="btn-primary text-center px-6 py-4 rounded-md bg-white text-blue-600 hover:bg-gray-200 transition duration-200"
+    <div style={{ background: "#020617", minHeight: "100vh" }}>
+      {/* Navbar */}
+      <nav
+        style={{
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          background: "#0a0f1e",
+        }}
+        className="h-16 flex items-center justify-between px-8 sticky top-0 z-50"
+      >
+        <div className="flex items-center gap-2">
+          <div
+            style={{ background: "#3b82f6" }}
+            className="w-8 h-8 rounded-lg flex items-center justify-center"
           >
-            Get Started Now
+            <span className="text-white font-bold text-sm">CX</span>
+          </div>
+          <span
+            style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
+            className="text-xl font-bold"
+          >
+            CampusLink <span style={{ color: "#3b82f6" }}>X</span>
+          </span>
+        </div>
+
+        <div className="flex items-center gap-6">
+          <Link
+            href="/login"
+            style={{ color: "#94a3b8" }}
+            className="text-sm font-medium hover:text-white transition-colors"
+          >
+            Login
+          </Link>
+          <Link href="/register" className="btn-accent text-sm">
+            Get Started →
           </Link>
         </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="px-8 pt-24 pb-20 max-w-6xl mx-auto text-center">
+        {/* Badge */}
+        <div className="flex justify-center mb-6">
+          <span
+            style={{
+              background: "rgba(59,130,246,0.1)",
+              border: "1px solid rgba(59,130,246,0.2)",
+              color: "#60a5fa",
+            }}
+            className="text-xs font-semibold px-4 py-1.5 rounded-full"
+          >
+            🎓 Academic & Career Collaboration Platform
+          </span>
+        </div>
+
+        <h1
+          style={{
+            fontFamily: "'Syne', sans-serif",
+            color: "#f1f5f9",
+            lineHeight: 1.1,
+          }}
+          className="text-5xl md:text-7xl font-bold mb-6"
+        >
+          Connect. Learn.{" "}
+          <span style={{ color: "#3b82f6" }}>Grow.</span>
+          <br />
+          <span style={{ color: "#475569" }}>All in One Campus.</span>
+        </h1>
+
+        <p
+          style={{ color: "#64748b", maxWidth: "560px" }}
+          className="text-lg mx-auto mb-10 leading-relaxed"
+        >
+          CampusLink X is your academic and career companion. Collaborate,
+          learn, and unlock opportunities — all in one modern ecosystem.
+        </p>
+
+        <div className="flex items-center justify-center gap-4">
+          <Link href="/register" className="btn-accent px-8 py-3 text-base">
+            Get Started Free
+          </Link>
+          <Link href="/login" className="btn-ghost px-8 py-3 text-base">
+            Sign In
+          </Link>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              style={{
+                background: "#0f172a",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}
+              className="rounded-xl p-6"
+            >
+              <p
+                style={{
+                  fontFamily: "'Syne', sans-serif",
+                  color: "#f1f5f9",
+                }}
+                className="text-3xl font-bold mb-1"
+              >
+                {stat.value}
+              </p>
+              <p style={{ color: "#475569" }} className="text-sm">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
+
+      {/* Features */}
+      <section
+        style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+        className="px-8 py-20 max-w-6xl mx-auto"
+      >
+        <div className="text-center mb-14">
+          <h2
+            style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
+            className="text-3xl md:text-4xl font-bold mb-4"
+          >
+            Everything you need to{" "}
+            <span style={{ color: "#3b82f6" }}>succeed</span>
+          </h2>
+          <p style={{ color: "#475569" }} className="text-base">
+            Four powerful features built for the modern student.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {features.map((f) => (
+            <div
+              key={f.title}
+              style={{
+                background: "#0f172a",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}
+              className="rounded-2xl p-8 hover:border-white/10 transition-all duration-200 group"
+            >
+              <div
+                style={{ background: f.bg, width: 52, height: 52 }}
+                className="rounded-xl flex items-center justify-center text-2xl mb-5"
+              >
+                {f.icon}
+              </div>
+              <h3
+                style={{
+                  fontFamily: "'Syne', sans-serif",
+                  color: "#f1f5f9",
+                }}
+                className="text-xl font-semibold mb-3"
+              >
+                {f.title}
+              </h3>
+              <p style={{ color: "#475569" }} className="text-sm leading-relaxed">
+                {f.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section
+        style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+        className="px-8 py-20 text-center"
+      >
+        <h2
+          style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
+          className="text-3xl md:text-4xl font-bold mb-4"
+        >
+          Ready to transform your{" "}
+          <span style={{ color: "#3b82f6" }}>campus experience?</span>
+        </h2>
+        <p style={{ color: "#475569" }} className="text-base mb-8">
+          Join thousands of students and lecturers already using CampusLink X.
+        </p>
+        <Link href="/register" className="btn-accent px-10 py-3 text-base">
+          Join CampusLink X →
+        </Link>
+      </section>
+
+      {/* Footer */}
+      <footer
+        style={{
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+          color: "#334155",
+        }}
+        className="px-8 py-6 text-center text-sm"
+      >
+        © 2025 CampusLink X. Built for students, by students.
+      </footer>
     </div>
   );
 }
