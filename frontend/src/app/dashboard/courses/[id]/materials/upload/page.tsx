@@ -11,162 +11,150 @@ export default function UploadMaterialPage() {
   const { id } = useParams() as { id: string };
   const router = useRouter();
   const { user } = useAuth();
-  const [formData, setFormData] = useState({
-    title: "",
-  });
+  const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [dragOver, setDragOver] = useState(false);
 
-  // Check if user is a lecturer
   if (user?.role === "student") {
     router.push("/dashboard");
     return null;
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...(prev || {}), [name]: value }));
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) setFile(e.target.files[0]);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
-    }
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    if (e.dataTransfer.files?.[0]) setFile(e.dataTransfer.files[0]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-
     if (!file) {
-      setError("Please select a file to upload.");
-      setLoading(false);
+      toast.error("Please select a file to upload");
       return;
     }
-
+    setLoading(true);
     try {
-      const data = {
-        title: formData.title,
+      await materialService.uploadMaterial(id, {
+        title,
         courseId: id,
-        file: file,
+        file,
         uploadedBy: user?._id,
         uploadedAt: Date(),
-      };
-
-      // Call the uploadMaterial service
-      const response = await materialService.uploadMaterial(id, data);
-      console.log(response);
-
-      // Redirect to the course materials page after successful upload
+      });
+      toast.success("Material uploaded successfully!");
       router.push(`/dashboard/courses/${id}`);
-      toast.success("Material has been successfully uploaded!");
-    } catch (err) {
-      setError("Failed to upload material. Please try again.");
-      console.error(err);
+    } catch {
+      toast.error("Failed to upload material");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">Upload Course Material</h1>
-        <p className="text-gray-600">Add a new learning resource for CS101</p>
+    <div className="space-y-6 max-w-2xl">
+      <div>
+        <h1
+          style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
+          className="text-2xl font-bold mb-1"
+        >
+          Upload Material
+        </h1>
+        <p style={{ color: "#475569" }} className="text-sm">
+          Add a new learning resource to this course
+        </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <form onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-md mb-4">
-              {error}
-            </div>
-          )}
-
-          <div className="mb-4">
-            <label htmlFor="title" className="form-label">
+      <div className="glass-card p-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label
+              style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500 }}
+              className="block mb-1.5"
+            >
               Material Title
             </label>
             <input
-              id="title"
-              name="title"
               type="text"
               required
-              className="form-input border rounded-md p-2 w-full mt-2"
-              value={formData.title}
-              onChange={handleChange}
               placeholder="e.g., Week 1 Lecture Notes"
+              className="input-dark"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
-          <div className="mb-6">
-            <label htmlFor="file" className="form-label">
-              Upload File
+          {/* Drop zone */}
+          <div>
+            <label
+              style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500 }}
+              className="block mb-1.5"
+            >
+              File
             </label>
-            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-              <div className="space-y-1 text-center">
-                <svg
-                  className="mx-auto h-12 w-12 text-gray-400"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 48 48"
-                  aria-hidden="true"
+            <div
+              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={handleDrop}
+              style={{
+                border: `2px dashed ${dragOver ? "#3b82f6" : "rgba(255,255,255,0.08)"}`,
+                borderRadius: 12,
+                background: dragOver ? "rgba(59,130,246,0.05)" : "#0a0f1e",
+                padding: "40px 20px",
+                textAlign: "center",
+                transition: "all 0.2s ease",
+                cursor: "pointer",
+              }}
+            >
+              <div className="text-3xl mb-3">📁</div>
+              <p style={{ color: "#475569" }} className="text-sm mb-2">
+                Drag & drop your file here, or{" "}
+                <label
+                  htmlFor="file-upload"
+                  style={{ color: "#60a5fa", cursor: "pointer" }}
+                  className="hover:underline"
                 >
-                  <path
-                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <div className="flex text-sm text-gray-600">
-                  <label
-                    htmlFor="file-upload"
-                    className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
-                  >
-                    <span>Upload a file</span>
-                    <input
-                      id="file-upload"
-                      name="file-upload"
-                      type="file"
-                      className="sr-only"
-                      onChange={handleFileChange}
-                    />
-                  </label>
-                  <p className="pl-1">or drag and drop</p>
-                </div>
-                <p className="text-xs text-gray-500">
-                  PDF, PPT, DOC, ZIP up to 10MB
-                </p>
-                {file && (
-                  <p className="text-sm text-green-600 mt-2">
-                    Selected: {file.name} (
-                    {(file.size / 1024 / 1024).toFixed(2)} MB)
+                  browse
+                </label>
+              </p>
+              <p style={{ color: "#334155" }} className="text-xs">
+                PDF, PPT, DOC, ZIP — up to 10MB
+              </p>
+              <input
+                id="file-upload"
+                type="file"
+                className="sr-only"
+                onChange={handleFileChange}
+              />
+              {file && (
+                <div
+                  style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 8, padding: "8px 16px", display: "inline-block", marginTop: 12 }}
+                >
+                  <p style={{ color: "#34d399" }} className="text-xs font-medium">
+                    ✓ {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
                   </p>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-3 pt-2">
             <Link
               href={`/dashboard/courses/${id}`}
-              className="btn-secondary mr-2 px-4 py-2 rounded-md bg-gray-600 text-white hover:bg-gray-700 transition duration-200"
+              className="btn-ghost text-sm px-5 py-2"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition duration-200"
+              className="btn-accent text-sm px-5 py-2"
             >
-              {loading ? "Uploading..." : "Upload Material"}
+              {loading ? "Uploading..." : "Upload Material →"}
             </button>
           </div>
         </form>

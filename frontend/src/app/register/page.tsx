@@ -2,165 +2,198 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { authService } from "@/services/auth.service";
-import { toast } from "react-toastify";
+import { useAuth } from "@/context/AuthContext";
 
-export default function Register() {
-  const router = useRouter();
-  const { register } = authService;
-  const [formData, setFormData] = useState<{
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    role: "student" | "lecturer";
-  }>({
+export default function RegisterPage() {
+  const { register } = useAuth();
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword: "",
     role: "student",
   });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      setLoading(false);
-      return;
-    }
-
     try {
-      await register(formData);
-      toast.success("Account created succesfully 🎉🎉🎉 ");
-      router.push("/login");
-    } catch (err) {
-      setError("Failed to create an account. Please try again.");
-      console.error(err);
+      await register(formData.name, formData.email, formData.password, formData.role);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+    <div
+      style={{ background: "#020617", minHeight: "100vh" }}
+      className="flex items-center justify-center px-4 py-12"
+    >
+      {/* Background glow */}
+      <div
+        style={{
+          position: "fixed",
+          top: "20%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "600px",
+          height: "300px",
+          background: "radial-gradient(ellipse, rgba(139,92,246,0.08) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="w-full max-w-md fade-up">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 mb-6">
+            <div
+              style={{ background: "#3b82f6" }}
+              className="w-9 h-9 rounded-xl flex items-center justify-center"
+            >
+              <span className="text-white font-bold text-sm">CX</span>
+            </div>
+            <span
+              style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
+              className="text-xl font-bold"
+            >
+              CampusLink <span style={{ color: "#3b82f6" }}>X</span>
+            </span>
+          </Link>
+          <h1
+            style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
+            className="text-2xl font-bold mb-2"
+          >
             Create your account
-          </h2>
+          </h1>
+          <p style={{ color: "#475569" }} className="text-sm">
+            Join thousands of students and lecturers
+          </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-md">{error}</div>
-          )}
-          <div className="rounded-md shadow-sm space-y-4">
+
+        {/* Card */}
+        <div
+          style={{
+            background: "#0f172a",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: "16px",
+            padding: "32px",
+          }}
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="fullName" className="form-label">
-                Full Name
+              <label
+                style={{ color: "#94a3b8", fontSize: "13px", fontWeight: 500 }}
+                className="block mb-1.5"
+              >
+                Full name
               </label>
               <input
-                id="fullName"
                 name="name"
                 type="text"
                 required
-                className="form-input border rounded-md p-2 w-full mt-2"
+                placeholder="Aditya Sharma"
+                className="input-dark"
                 value={formData.name}
                 onChange={handleChange}
               />
             </div>
+
             <div>
-              <label htmlFor="email" className="form-label">
+              <label
+                style={{ color: "#94a3b8", fontSize: "13px", fontWeight: 500 }}
+                className="block mb-1.5"
+              >
                 Email address
               </label>
               <input
-                id="email"
                 name="email"
                 type="email"
-                className="form-input border rounded-md p-2 w-full mt-2"
+                required
+                placeholder="you@university.edu"
+                className="input-dark"
                 value={formData.email}
                 onChange={handleChange}
               />
             </div>
+
             <div>
-              <label htmlFor="password" className="form-label">
+              <label
+                style={{ color: "#94a3b8", fontSize: "13px", fontWeight: 500 }}
+                className="block mb-1.5"
+              >
                 Password
               </label>
               <input
-                id="password"
                 name="password"
                 type="password"
-                autoComplete="new-password"
                 required
-                className="form-input border rounded-md p-2 w-full mt-2"
+                placeholder="••••••••"
+                className="input-dark"
                 value={formData.password}
                 onChange={handleChange}
               />
             </div>
+
             <div>
-              <label htmlFor="confirmPassword" className="form-label">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="form-input border rounded-md p-2 w-full mt-2"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="role" className="form-label">
-                I am a:
+              <label
+                style={{ color: "#94a3b8", fontSize: "13px", fontWeight: 500 }}
+                className="block mb-1.5"
+              >
+                I am a...
               </label>
               <select
-                id="role"
                 name="role"
-                className="form-input border rounded-md p-2 w-full mt-2"
+                className="input-dark"
                 value={formData.role}
                 onChange={handleChange}
+                style={{
+                  background: "#0f172a",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  borderRadius: "8px",
+                  padding: "10px 14px",
+                  color: "#f1f5f9",
+                  width: "100%",
+                  outline: "none",
+                }}
               >
                 <option value="student">Student</option>
                 <option value="lecturer">Lecturer</option>
               </select>
             </div>
-          </div>
 
-          <div>
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full flex justify-center items-center mt-4 btn-primary px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition duration-200 cursor-pointer"
+              className="btn-accent w-full py-2.5 mt-2"
             >
-              {loading ? "Creating account..." : "Create Account"}
+              {loading ? "Creating account..." : "Create Account →"}
             </button>
-          </div>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          </form>
+
+          <p
+            style={{
+              color: "#475569",
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+            }}
+            className="text-sm text-center mt-6 pt-6"
+          >
             Already have an account?{" "}
             <Link
               href="/login"
-              className="font-medium text-blue-600 hover:text-blue-500"
+              style={{ color: "#60a5fa" }}
+              className="font-medium hover:underline"
             >
               Sign in
             </Link>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   );

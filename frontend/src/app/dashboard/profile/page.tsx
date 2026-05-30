@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { authService } from "@/services/auth.service";
@@ -8,7 +9,6 @@ import { toast } from "react-toastify";
 export default function ProfilePage() {
   const { user, setUser } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [formData, setFormData] = useState<Partial<User>>({
     name: user?.name || "",
     email: user?.email || "",
@@ -16,118 +16,111 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (user) {
-      setFormData({
-        name: user.name,
-        email: user.email,
-      });
+      setFormData({ name: user.name, email: user.email });
     }
   }, [user]);
 
-  const handleChange = (
-    e: React.ChangeEvent
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-
     try {
-      const response = await authService.updateUser(user!._id, formData);
-      // @ts-expect-error it keeps giving the error
-      setUser((prevData) => ({ ...prevData, ...formData }));
-      if (response.success) {
-        toast.success("Profile updated successfully");
-      }
-    } catch (err) {
-      setError("Failed to update user details.");
+      await authService.updateUser(user!._id, formData);
+      // @ts-expect-error context type mismatch
+      setUser((prev) => ({ ...prev, ...formData }));
+      toast.success("Profile updated successfully");
+    } catch {
       toast.error("Failed to update profile");
-      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  const roleColor =
+    user?.role === "admin"
+      ? { bg: "rgba(239,68,68,0.1)", color: "#f87171" }
+      : user?.role === "lecturer"
+      ? { bg: "rgba(139,92,246,0.1)", color: "#a78bfa" }
+      : { bg: "rgba(16,185,129,0.1)", color: "#34d399" };
+
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">My Profile</h1>
-        <p className="text-gray-600">Manage your account information</p>
+    <div className="space-y-6 max-w-3xl">
+      {/* Header */}
+      <div>
+        <h1 style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }} className="text-2xl font-bold mb-1">
+          My Profile
+        </h1>
+        <p style={{ color: "#475569" }} className="text-sm">
+          Manage your account information
+        </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="md:flex">
-          {/* Sidebar */}
-          <div className="bg-gray-50 p-6 md:w-1/3">
-            <div className="flex flex-col items-center">
-              <div className="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 text-4xl mb-4">
-                {user?.name?.charAt(0) || "U"}
-              </div>
-              <h2 className="text-xl font-bold">Name: {user?.name}</h2>
-              <p className="text-gray-600">Role: {user?.role}</p>
-              <p className="text-gray-500 mt-1">Email: {user?.email}</p>
-            </div>
-          </div>
-
-          {/* Main content */}
-          <div className="p-6 md:w-2/3">
-            <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
-
-            {/* Bug 5 fix: error now actually renders */}
-            {error && (
-              <div className="bg-red-50 text-red-500 p-3 rounded-md mb-4">
-                {error}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit}>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="fullName" className="form-label">
-                    Full Name
-                  </label>
-                  <input
-                    id="fullName"
-                    name="name"
-                    type="text"
-                    className="form-input border rounded-md p-2 w-full"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="form-label">
-                    Email Address
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    className="form-input border rounded-md p-2 w-full"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="btn-primary px-4 py-2 mt-4 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition duration-200"
-                >
-                  {loading ? "Updating..." : "Update Profile"}
-                </button>
-              </div>
-            </form>
-          </div>
+      {/* Profile card */}
+      <div className="glass-card p-6 flex items-center gap-5">
+        <div
+          style={{ background: "#1d4ed8", width: 72, height: 72, borderRadius: "50%", flexShrink: 0 }}
+          className="flex items-center justify-center text-white text-2xl font-bold"
+        >
+          {user?.name?.charAt(0).toUpperCase()}
         </div>
+        <div>
+          <h2 style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }} className="text-lg font-semibold mb-1">
+            {user?.name}
+          </h2>
+          <p style={{ color: "#475569" }} className="text-sm mb-2">
+            {user?.email}
+          </p>
+          <span
+            style={{ background: roleColor.bg, color: roleColor.color }}
+            className="badge"
+          >
+            {user?.role}
+          </span>
+        </div>
+      </div>
+
+      {/* Edit form */}
+      <div className="glass-card p-6">
+        <h3
+          style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
+          className="text-base font-semibold mb-5"
+        >
+          Edit Information
+        </h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500 }} className="block mb-1.5">
+              Full Name
+            </label>
+            <input
+              name="name"
+              type="text"
+              className="input-dark"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500 }} className="block mb-1.5">
+              Email Address
+            </label>
+            <input
+              name="email"
+              type="email"
+              className="input-dark"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex justify-end pt-2">
+            <button type="submit" disabled={loading} className="btn-accent px-6 py-2">
+              {loading ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

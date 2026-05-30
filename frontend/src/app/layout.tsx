@@ -4,6 +4,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
+<html lang="en" data-scroll-behavior="smooth"></html>
+
 export const metadata: Metadata = {
   title: "CampusLink X — Academic & Career Collaboration",
   description:

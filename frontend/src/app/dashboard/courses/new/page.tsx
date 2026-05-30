@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
@@ -20,11 +20,14 @@ export default function CreateCoursePage() {
   });
   const [loading, setLoading] = useState(false);
 
-  // Check if user is a lecturer
-  if (user?.role !== "lecturer") {
-    router.push("/dashboard");
-    return null;
+  useEffect(() => {
+  if (
+    user &&
+    user.role !== "lecturer"
+  ) {
+    router.push("/dashboard/courses");
   }
+}, [user, router]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -63,7 +66,7 @@ export default function CreateCoursePage() {
         </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="glass card p-6">
         <form onSubmit={handleSubmit}>
           {error && (
             <div className="bg-red-50 text-red-500 p-3 rounded-md mb-4">

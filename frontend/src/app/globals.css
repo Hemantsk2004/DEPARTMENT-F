@@ -115,24 +115,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Input */
-.input-dark {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 14px;
-  color: var(--text-primary);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+.input-dark,
+.form-input {
   width: 100%;
+  background: #020617;
+  color: #f8fafc;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: all 0.2s ease;
+}
+
+.input-dark::placeholder,
+.form-input::placeholder {
+  color: #64748b;
+}
+
+.input-dark:focus,
+.form-input:focus {
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.input-dark::placeholder {
-  color: var(--text-muted);
-}
-.input-dark:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
 }
 
 /* Badge */

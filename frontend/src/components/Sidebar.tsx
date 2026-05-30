@@ -12,12 +12,42 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", icon: "⊞" },
-  { href: "/dashboard/courses", label: "My Courses", icon: "📚" },
-  { href: "/dashboard/rooms", label: "Study Rooms", icon: "💬" },
-  { href: "/dashboard/ai-study", label: "AI Assistant", icon: "🤖" },
-  { href: "/dashboard/opportunities", label: "Opportunities", icon: "🚀" },
-  { href: "/dashboard/portfolio", label: "My Portfolio", icon: "🧑‍💼" },
+  {
+    href: "/dashboard",
+    label: "Dashboard",
+    icon: "⊞",
+    roles: ["admin", "lecturer"],
+  },
+
+  {
+    href: "/dashboard/courses",
+    label: "My Courses",
+    icon: "📚",
+  },
+
+  {
+    href: "/dashboard/rooms",
+    label: "Study Rooms",
+    icon: "💬",
+  },
+
+  {
+    href: "/dashboard/ai-study",
+    label: "AI Assistant",
+    icon: "🤖",
+  },
+
+  {
+    href: "/dashboard/opportunities",
+    label: "Opportunities",
+    icon: "🚀",
+  },
+
+  {
+    href: "/dashboard/portfolio",
+    label: "My Portfolio",
+    icon: "🧑‍💼",
+  },
 ];
 
 const bottomNavItems: NavItem[] = [
@@ -128,9 +158,18 @@ export default function Sidebar() {
       {/* Main nav */}
       <nav className="flex-1 py-3">
         <div className="space-y-0.5">
-          {navItems.map((item) => (
-            <NavLink key={item.href} item={item} />
-          ))}
+        {navItems
+          .filter(
+            (item) =>
+              !item.roles ||
+              item.roles.includes(user.role)
+          )
+          .map((item) => (
+            <NavLink
+              key={item.href}
+              item={item}
+            />
+        ))}
         </div>
 
         {/* Role-specific */}

@@ -2,123 +2,143 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { useApiError } from "@/hooks/useApiError";
-import { toast } from "react-toastify";
 
-export default function Login() {
-  const router = useRouter();
+export default function LoginPage() {
   const { login } = useAuth();
-  const { error, handleError, clearError } = useApiError();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    clearError();
     setLoading(true);
-
     try {
       await login(formData.email, formData.password);
-      router.push("/dashboard");
-      toast.success("Login successful.");
-    } catch (err) {
-      handleError(err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-gray-50 h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
+    <div
+      style={{ background: "#020617", minHeight: "100vh" }}
+      className="flex items-center justify-center px-4"
+    >
+      {/* Background glow */}
+      <div
+        style={{
+          position: "fixed",
+          top: "20%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "600px",
+          height: "300px",
+          background: "radial-gradient(ellipse, rgba(59,130,246,0.08) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="w-full max-w-md fade-up">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 mb-6">
+            <div
+              style={{ background: "#3b82f6" }}
+              className="w-9 h-9 rounded-xl flex items-center justify-center"
+            >
+              <span className="text-white font-bold text-sm">CX</span>
+            </div>
+            <span
+              style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
+              className="text-xl font-bold"
+            >
+              CampusLink <span style={{ color: "#3b82f6" }}>X</span>
+            </span>
+          </Link>
+          <h1
+            style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
+            className="text-2xl font-bold mb-2"
+          >
+            Welcome back
+          </h1>
+          <p style={{ color: "#475569" }} className="text-sm">
+            Sign in to your account to continue
+          </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-md">{error}</div>
-          )}
-          <div className="rounded-md shadow-sm space-y-4">
+
+        {/* Card */}
+        <div
+          style={{
+            background: "#0f172a",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: "16px",
+            padding: "32px",
+          }}
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="form-label">
+              <label
+                style={{ color: "#94a3b8", fontSize: "13px", fontWeight: 500 }}
+                className="block mb-1.5"
+              >
                 Email address
               </label>
               <input
-                id="email"
                 name="email"
                 type="email"
-                autoComplete="email"
                 required
-                className="form-input border rounded-md p-2 w-full mt-2"
+                placeholder="you@university.edu"
+                className="input-dark"
                 value={formData.email}
                 onChange={handleChange}
               />
             </div>
+
             <div>
-              <label htmlFor="password" className="form-label">
+              <label
+                style={{ color: "#94a3b8", fontSize: "13px", fontWeight: 500 }}
+                className="block mb-1.5"
+              >
                 Password
               </label>
               <input
-                id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
                 required
-                className="form-input border rounded-md p-2 w-full mt-2"
+                placeholder="••••••••"
+                className="input-dark"
                 value={formData.password}
                 onChange={handleChange}
               />
             </div>
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="remember-me"
-                className="ml-2 block text-sm text-gray-900"
-              >
-                Remember me
-              </label>
-            </div>
-          </div>
-
-          <div>
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full flex justify-center items-center btn-primary px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition duration-200 cursor-pointer mt-4"
+              className="btn-accent w-full py-2.5 mt-2"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? "Signing in..." : "Sign In →"}
             </button>
-          </div>
-          <p className="text-center text-sm text-gray-600">
+          </form>
+
+          <p
+            style={{ color: "#475569", borderTop: "1px solid rgba(255,255,255,0.06)" }}
+            className="text-sm text-center mt-6 pt-6"
+          >
             Don&apos;t have an account?{" "}
             <Link
               href="/register"
-              className="font-medium text-blue-600 hover:text-blue-500"
+              style={{ color: "#60a5fa" }}
+              className="font-medium hover:underline"
             >
-              Register
+              Create one
             </Link>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   );
