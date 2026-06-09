@@ -462,12 +462,21 @@ export default function CourseDetailsPage() {
             </span>
 
             {user?.role === "student" && (
-              <Link
-                href={`/dashboard/assignments/${assignment._id}/submit`}
-                className="btn-accent px-3 py-2"
-              >
-                Submit Assignment
-              </Link>
+              <div className="flex gap-2">
+                <Link
+                  href={`/dashboard/assignments/${assignment._id}/submit`}
+                  className="btn-accent px-3 py-2"
+                >
+                  Submit Assignment
+                </Link>
+
+                <Link
+                  href={`/dashboard/assignments/${assignment._id}/result`}
+                  className="btn-ghost px-3 py-2"
+                >
+                  View Result
+                </Link>
+              </div>
             )}
 
             {user?.role === "lecturer" && (

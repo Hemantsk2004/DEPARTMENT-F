@@ -56,4 +56,16 @@ export const submissionService = {
 
       return response.data;
     },
+
+    getStudentSubmission:
+  async (
+    assignmentId: string
+  ) => {
+    const response =
+      await api.get(
+        `/api/submissions/student/${assignmentId}`
+      );
+
+    return response.data;
+  },
 };

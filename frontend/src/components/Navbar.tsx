@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { notificationService } from "@/services/notification.service";
+
 
 const pageTitles: Record<string, string> = {
   "/dashboard": "Dashboard",
@@ -19,8 +22,29 @@ const pageTitles: Record<string, string> = {
 export default function Navbar() {
   const { user, logout } = useAuth();
   const pathname = usePathname();
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const pageTitle = pageTitles[pathname] ?? "CampusLink X";
+  useEffect(() => {
+  const fetchNotifications =
+    async () => {
+      try {
+        const res =
+          await notificationService.getNotifications();
+
+        setNotifications(
+          res.data || []
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+  if (user) {
+    fetchNotifications();
+  }
+}, [user]);
 
   return (
     <nav
@@ -61,20 +85,91 @@ export default function Navbar() {
       {user ? (
         <div className="flex items-center gap-4">
           {/* Notification bell */}
-          <button
-            style={{
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.06)",
-              color: "#94a3b8",
-            }}
-            className="w-9 h-9 rounded-lg flex items-center justify-center hover:text-white transition-colors relative"
-          >
-            🔔
-            <span
-              style={{ background: "#3b82f6" }}
-              className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full"
-            />
-          </button>
+<div className="relative">
+
+  <button
+    onClick={() =>
+      setShowNotifications(
+        !showNotifications
+      )
+    }
+    style={{
+      background:
+        "rgba(255,255,255,0.04)",
+
+      border:
+        "1px solid rgba(255,255,255,0.06)",
+
+      color: "#94a3b8",
+    }}
+    className="w-9 h-9 rounded-lg flex items-center justify-center hover:text-white transition-colors relative"
+  >
+    🔔
+
+    {notifications.some(
+      (n) => !n.isRead
+    ) && (
+      <span
+        style={{
+          background:
+            "#3b82f6",
+        }}
+        className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full"
+      />
+    )}
+  </button>
+
+  {showNotifications && (
+    <div
+      style={{
+        background: "#0f172a",
+        border:
+          "1px solid rgba(255,255,255,0.08)",
+      }}
+      className="absolute right-0 mt-2 w-80 rounded-xl shadow-xl overflow-hidden z-50"
+    >
+      <div className="p-3 border-b border-slate-800">
+        <h3 className="text-white font-semibold">
+          Notifications
+        </h3>
+      </div>
+
+      <div className="max-h-96 overflow-y-auto">
+
+        {notifications.length === 0 ? (
+          <div className="p-4 text-slate-400 text-sm">
+            No notifications
+          </div>
+        ) : (
+          notifications.map(
+            (notification) => (
+              <div
+                key={
+                  notification._id
+                }
+                className="p-4 border-b border-slate-800 hover:bg-slate-900 cursor-pointer"
+              >
+                <p className="text-white text-sm font-medium">
+                  {
+                    notification.title
+                  }
+                </p>
+
+                <p className="text-slate-400 text-xs mt-1">
+                  {
+                    notification.message
+                  }
+                </p>
+              </div>
+            )
+          )
+        )}
+
+      </div>
+    </div>
+  )}
+
+</div>
 
           {/* Role badge */}
           <span

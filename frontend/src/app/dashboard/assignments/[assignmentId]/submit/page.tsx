@@ -1,108 +1,86 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useState } from "react";
+import { useParams } from "next/navigation";
+import { toast } from "react-toastify";
+import { submissionService } from "@/services/submission.service";
 
-import { useParams }
-from "next/navigation";
-
-import Link
-from "next/link";
-
-import {
-  submissionService,
-} from "@/services/submission.service";
-
-export default function SubmissionsPage() {
-
-  const params =
-    useParams();
+export default function SubmitAssignmentPage() {
+  const params = useParams();
 
   const assignmentId =
-    params.assignmentId as string;
+    params?.assignmentId?.toString() || "";
 
-  const [submissions,
-    setSubmissions] =
-    useState<any[]>([]);
+  const [file, setFile] =
+    useState<File | null>(null);
 
-  useEffect(() => {
+  const [loading, setLoading] =
+    useState(false);
 
-    const fetchData =
-      async () => {
+  const handleSubmit = async (
+    e: React.FormEvent
+  ) => {
+    e.preventDefault();
 
-        const res =
-          await submissionService.getSubmissions(
-            assignmentId
-          );
+    if (!file) {
+      toast.error(
+        "Please select a file"
+      );
+      return;
+    }
 
-        setSubmissions(
-          res.data
-        );
-      };
+    try {
+      setLoading(true);
 
-    fetchData();
+      await submissionService.submitAssignment(
+        assignmentId,
+        file
+      );
 
-  }, [assignmentId]);
+      toast.success(
+        "Assignment submitted successfully"
+      );
+
+    } catch (error) {
+      console.error(error);
+
+      toast.error(
+        "Failed to submit assignment"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="space-y-4">
-
-      <h1 className="text-3xl font-bold text-white">
-        Assignment Submissions
+    <div className="max-w-3xl mx-auto">
+      <h1 className="text-3xl font-bold text-white mb-6">
+        Submit Assignment
       </h1>
 
-      {submissions.map(
-        (submission) => (
-          <div
-            key={submission._id}
-            className="glass-card p-5 flex justify-between"
-          >
+      <form
+        onSubmit={handleSubmit}
+        className="glass-card p-6 space-y-4"
+      >
+        <input
+          type="file"
+          onChange={(e) =>
+            setFile(
+              e.target.files?.[0] || null
+            )
+          }
+          className="w-full"
+        />
 
-            <div>
-
-              <h3 className="text-white">
-                {
-                  submission.studentId
-                    ?.name
-                }
-              </h3>
-
-              <p className="text-slate-400">
-                {
-                  submission.studentId
-                    ?.email
-                }
-              </p>
-
-            </div>
-
-            <div className="flex gap-3">
-
-              <a
-                href={
-                  submission.fileUrl
-                }
-                target="_blank"
-                className="btn-ghost px-3 py-2"
-              >
-                View File
-              </a>
-
-              <Link
-                href={`/dashboard/submissions/${submission._id}/grade`}
-                className="btn-accent px-3 py-2"
-              >
-                Grade
-              </Link>
-
-            </div>
-
-          </div>
-        )
-      )}
-
+        <button
+          type="submit"
+          className="btn-accent px-5 py-3"
+        >
+          {loading
+            ? "Submitting..."
+            : "Submit Assignment"}
+        </button>
+      </form>
     </div>
   );
 }

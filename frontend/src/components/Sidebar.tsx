@@ -16,7 +16,7 @@ const navItems: NavItem[] = [
     href: "/dashboard",
     label: "Dashboard",
     icon: "⊞",
-    roles: ["admin", "lecturer"],
+    roles: ["admin"],
   },
 
   {
@@ -35,6 +35,7 @@ const navItems: NavItem[] = [
     href: "/dashboard/ai-study",
     label: "AI Assistant",
     icon: "🤖",
+    roles: ["student", "lecturer"],
   },
 
   {
@@ -47,6 +48,7 @@ const navItems: NavItem[] = [
     href: "/dashboard/portfolio",
     label: "My Portfolio",
     icon: "🧑‍💼",
+    roles: ["student"],
   },
 ];
 
@@ -221,14 +223,9 @@ export default function Sidebar() {
       </div>
 
       {/* Version */}
-      <div
-        style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
-        className="px-4 py-3"
-      >
-        <p style={{ color: "#1e293b" }} className="text-xs text-center">
-          CampusLink X v1.0
-        </p>
-      </div>
+      <p style={{ color: "#334155" }}className="text-xs text-center">
+        CampusLink X
+      </p>
     </aside>
   );
 }
