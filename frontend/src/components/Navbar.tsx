@@ -126,12 +126,18 @@ export default function Navbar() {
         border:
           "1px solid rgba(255,255,255,0.08)",
       }}
-      className="absolute right-0 mt-2 w-80 rounded-xl shadow-xl overflow-hidden z-50"
+      className="absolute right-0 mt-2 w-[380px] rounded-xl shadow-xl overflow-hidden z-50"
     >
       <div className="p-3 border-b border-slate-800">
-        <h3 className="text-white font-semibold">
-          Notifications
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-white font-semibold">
+            Notifications
+          </h3>
+
+          <span className="text-xs text-blue-400">
+            {notifications.length}
+          </span>
+        </div>
       </div>
 
       <div className="max-h-96 overflow-y-auto">
@@ -144,22 +150,61 @@ export default function Navbar() {
           notifications.map(
             (notification) => (
               <div
-                key={
-                  notification._id
-                }
-                className="p-4 border-b border-slate-800 hover:bg-slate-900 cursor-pointer"
+                key={notification._id}
+                className="
+                  p-4
+                  border-b
+                  border-slate-800
+                  hover:bg-slate-900
+                  transition-all
+                  cursor-pointer
+                "
               >
-                <p className="text-white text-sm font-medium">
-                  {
-                    notification.title
-                  }
-                </p>
+                <div className="flex gap-3">
 
-                <p className="text-slate-400 text-xs mt-1">
-                  {
-                    notification.message
-                  }
-                </p>
+                  <div
+                    className={`
+                      w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0
+                      ${
+                        notification.type === "assignment"
+                          ? "bg-blue-500/20"
+                          : notification.type === "lecture"
+                          ? "bg-purple-500/20"
+                          : notification.type === "announcement"
+                          ? "bg-green-500/20"
+                          : "bg-slate-700"
+                      }
+                    `}
+                  >
+                    {notification.type === "assignment"
+                      ? "📝"
+                      : notification.type === "lecture"
+                      ? "🎥"
+                      : notification.type === "announcement"
+                      ? "📢"
+                      : "🔔"}
+                  </div>
+
+                  <div className="flex-1">
+                    <p className="text-white text-sm font-semibold">
+                      {notification.title}
+                    </p>
+
+                    <p className="text-slate-400 text-xs mt-1">
+                      {notification.message}
+                    </p>
+
+                    <p className="text-slate-500 text-[11px] mt-2">
+                      {new Date(
+                        notification.createdAt
+                      ).toLocaleString()}
+                    </p>
+                  </div>
+
+                  {!notification.isRead && (
+                    <div className="w-2 h-2 rounded-full bg-blue-500 mt-2" />
+                  )}
+                </div>
               </div>
             )
           )

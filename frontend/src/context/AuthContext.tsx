@@ -78,7 +78,7 @@ export const AuthProvider = ({
 
       setUser(response.data.user);
 
-      router.push("/dashboard");
+      router.push("/dashboard/courses");
     } catch (error) {
       console.error("Login failed:", error);
       throw error;

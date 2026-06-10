@@ -169,6 +169,16 @@ export default function LandingPage() {
           <p style={{ color: "#475569" }} className="text-base">
             Four powerful features built for the modern student.
           </p>
+
+          <div className="flex justify-center mt-6">
+          <div
+            className="h-[2px] w-32 rounded-full"
+            style={{
+              background:
+                "linear-gradient(90deg,#3b82f6,transparent)",
+            }}
+          />
+        </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -179,11 +189,35 @@ export default function LandingPage() {
                 background: "#0f172a",
                 border: "1px solid rgba(255,255,255,0.06)",
               }}
-              className="rounded-2xl p-8 hover:border-white/10 transition-all duration-200 group"
+              className="
+                rounded-2xl
+                p-8
+                group
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:shadow-[0_20px_40px_rgba(59,130,246,0.15)]
+                hover:border-blue-500/30
+              "
             >
               <div
-                style={{ background: f.bg, width: 52, height: 52 }}
-                className="rounded-xl flex items-center justify-center text-2xl mb-5"
+                style={{
+                  background: f.bg,
+                  width: 52,
+                  height: 52,
+                }}
+                className="
+                  rounded-xl
+                  flex
+                  items-center
+                  justify-center
+                  text-2xl
+                  mb-5
+                  transition-all
+                  duration-300
+                  group-hover:scale-110
+                  group-hover:rotate-3
+                "
               >
                 {f.icon}
               </div>
@@ -227,12 +261,61 @@ export default function LandingPage() {
       {/* Footer */}
       <footer
         style={{
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          color: "#334155",
+          borderTop:
+            "1px solid rgba(255,255,255,0.06)",
+          background: "#0a0f1e",
         }}
-        className="px-8 py-6 text-center text-sm"
+        className="px-8 py-12"
       >
-        © 2025 CampusLink X. Built for students, by students.
+        <div className="max-w-6xl mx-auto">
+
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+
+            <div>
+              <h3
+                style={{
+                  color: "#f1f5f9",
+                  fontFamily:
+                    "'Syne', sans-serif",
+                }}
+                className="text-xl font-bold"
+              >
+                CampusLink X
+              </h3>
+
+              <p
+                style={{
+                  color: "#64748b",
+                }}
+                className="text-sm mt-2"
+              >
+                Academic & Career Collaboration Platform
+              </p>
+            </div>
+
+            <div
+              style={{
+                color: "#475569",
+              }}
+              className="text-sm"
+            >
+              Built with Next.js • Node.js • MongoDB • Socket.IO
+            </div>
+
+          </div>
+
+          <div
+            style={{
+              borderTop:
+                "1px solid rgba(255,255,255,0.06)",
+              color: "#334155",
+            }}
+            className="mt-8 pt-6 text-center text-sm"
+          >
+            © 2026 CampusLink X. All rights reserved.
+          </div>
+
+        </div>
       </footer>
     </div>
   );

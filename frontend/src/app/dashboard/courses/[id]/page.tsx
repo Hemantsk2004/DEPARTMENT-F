@@ -184,7 +184,8 @@ export default function CourseDetailsPage() {
     <div className="space-y-6">
 
       {/* HERO */}
-      <div className="glass-card p-8">
+      <div className="glass-card p-10"
+        style={{background:"linear-gradient(135deg, rgba(59,130,246,0.08), rgba(15,23,42,0.9))",}}>
         <div className="flex flex-col lg:flex-row justify-between gap-6">
 
           <div>
@@ -202,22 +203,39 @@ export default function CourseDetailsPage() {
 
             <p className="text-slate-400 mt-4 max-w-3xl">{course.description}</p>
 
-            <div className="flex gap-6 mt-6 flex-wrap">
-              <div>
-                <p className="text-slate-500 text-xs">Students</p>
-                <p className="text-white font-semibold">{students.length}</p>
-              </div>
-              <div>
-                <p className="text-slate-500 text-xs">Materials</p>
-                <p className="text-white font-semibold">{materials.length}</p>
-              </div>
-              <div>
-                <p className="text-slate-500 text-xs">Lecturer</p>
-                <p className="text-white font-semibold">
-                  {course.lecturer?.name || "Assigned Lecturer"}
-                </p>
-              </div>
+            <div className="grid grid-cols-3 gap-4 mt-8">
+
+            <div className="bg-slate-900/50 rounded-2xl p-4">
+              <p className="text-slate-500 text-xs uppercase">
+                Students
+              </p>
+
+              <p className="text-white text-2xl font-bold mt-2">
+                {students.length}
+              </p>
             </div>
+
+            <div className="bg-slate-900/50 rounded-2xl p-4">
+              <p className="text-slate-500 text-xs uppercase">
+                Materials
+              </p>
+
+              <p className="text-white text-2xl font-bold mt-2">
+                {materials.length}
+              </p>
+            </div>
+
+            <div className="bg-slate-900/50 rounded-2xl p-4">
+              <p className="text-slate-500 text-xs uppercase">
+                Lecturer
+              </p>
+
+              <p className="text-white font-semibold mt-2 truncate">
+                {course.lecturer?.name || "Assigned"}
+              </p>
+            </div>
+
+          </div>
           </div>
 
           {/* FIX 3: Removed duplicated Edit/Upload buttons that appeared unconditionally
@@ -272,16 +290,16 @@ export default function CourseDetailsPage() {
 
       {/* TABS */}
       <div className="glass-card">
-        <div className="flex border-b border-white/10 overflow-x-auto">
+<div className="flex overflow-x-auto gap-2 p-3 border-b border-white/10">
           {[  "overview","materials","assignments","announcements","lectures","students"].map(
             (tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-4 capitalize whitespace-nowrap ${
+                className={`px-5 py-3 rounded-xl capitalize whitespace-nowrap transition-all ${
                   activeTab === tab
-                    ? "text-blue-400 border-b-2 border-blue-500"
-                    : "text-slate-400"
+                    ? "bg-blue-600 text-white"
+                    : "text-slate-400 hover:bg-slate-800"
                 }`}
               >
                 {tab}
@@ -298,7 +316,17 @@ export default function CourseDetailsPage() {
                 <h3 className="text-white font-semibold mb-3">
                   Course Description
                 </h3>
-                <p className="text-slate-400">{course.description}</p>
+                <div className="flex gap-3 mt-5 flex-wrap">
+
+                  <span className="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-xs">
+                    Active Course
+                  </span>
+
+                  <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full text-xs">
+                    Academic
+                  </span>
+
+                </div>
               </div>
 
               <div className="grid md:grid-cols-3 gap-4">

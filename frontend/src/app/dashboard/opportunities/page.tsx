@@ -81,16 +81,31 @@ export default function OpportunitiesPage() {
   return (
     <div className="space-y-8">
       <div className="space-y-6">
-<div className="flex justify-between items-center flex-wrap gap-4">
-      <div>
-        <h1 className="text-4xl font-bold text-white">
-          Opportunities
-        </h1>
+        <div className="flex justify-between items-center flex-wrap gap-4"><div
+          className="rounded-3xl p-8 border border-white/10"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(37,99,235,0.15), rgba(15,23,42,0.95))",
+          }}
+        >
+          <div className="flex items-center gap-4">
 
-        <p className="text-gray-400 mt-2">
-          Explore internships, hackathons and placements
-        </p>
-      </div>
+            <div className="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center text-3xl">
+              🚀
+            </div>
+
+            <div>
+              <h1 className="text-4xl font-bold text-white">
+                Opportunities Hub
+              </h1>
+
+              <p className="text-slate-400 mt-2">
+                Discover internships, placements and hackathons curated for students.
+              </p>
+            </div>
+
+          </div>
+        </div>
 
       {(user?.role === "admin" ||
         user?.role === "lecturer") && (
@@ -109,8 +124,7 @@ export default function OpportunitiesPage() {
             placeholder="Search opportunities..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="bg-[#0F172A] border border-white/10 rounded-2xl px-4 py-3 text-white w-full lg:w-96 outline-none focus:border-blue-500"
-          />
+            className="bg-[#0F172A] border border-white/10 rounded-2xl px-5 py-3 text-white w-full lg:w-96 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"/>
 
           <div className="flex flex-wrap gap-3">
             {[
@@ -150,8 +164,7 @@ export default function OpportunitiesPage() {
           filteredOpportunities.map((opportunity) => (
             <div
               key={opportunity._id}
-              className="bg-[#0F172A] border border-white/10 rounded-3xl p-6 shadow-lg hover:border-blue-500/40 transition"
-            >
+              className="bg-[#0F172A] border border-white/10 rounded-3xl p-6 shadow-lg hover:border-blue-500/40 hover:-translate-y-1 hover:shadow-blue-500/10 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
                 <span className="px-3 py-1 rounded-full text-xs bg-blue-500/20 text-blue-400 capitalize">
                   {opportunity.type}
@@ -165,17 +178,61 @@ export default function OpportunitiesPage() {
                 </span>
               </div>
 
-              <h2 className="text-2xl font-semibold text-white">
-                {opportunity.title}
-              </h2>
+              <div className="flex items-center gap-3">
 
-              <p className="text-blue-400 mt-1">
-                {opportunity.company}
-              </p>
+                <div
+                  className="
+                    w-12
+                    h-12
+                    rounded-xl
+                    bg-blue-500/20
+                    flex
+                    items-center
+                    justify-center
+                    text-blue-400
+                    font-bold
+                    text-lg
+                  "
+                >
+                  {opportunity.company.charAt(0)}
+                </div>
+
+                <div>
+
+                  <h2 className="text-xl font-semibold text-white">
+                    {opportunity.title}
+                  </h2>
+
+                  <p className="text-blue-400 text-sm">
+                    {opportunity.company}
+                  </p>
+
+                </div>
+
+              </div>
 
               <p className="text-gray-400 mt-4 line-clamp-3">
                 {opportunity.description}
               </p>
+                  <div className="mt-5">
+                  <span className="text-xs text-slate-500">
+                    Closing in{" "}
+                    {Math.max(
+                      0,
+                      Math.ceil(
+                        (
+                          new Date(
+                            opportunity.deadline
+                          ).getTime() -
+                          Date.now()
+                        ) /
+                          (1000 * 60 * 60 * 24)
+                      )
+                    )}{" "}
+                    days
+                  </span>
+
+                </div>
 
               <div className="flex items-center gap-3 mt-6">
                 <a

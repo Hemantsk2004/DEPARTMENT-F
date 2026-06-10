@@ -83,11 +83,20 @@ export default function CoursesPage() {
   const renderCourseCard = (
     course: any
   ) => (
-    <Link
-      key={course._id}
-      href={`/dashboard/courses/${course._id}`}
-      className="glass-card p-5 hover:border-blue-500 transition-all"
-    >
+      <Link
+        key={course._id}
+        href={`/dashboard/courses/${course._id}`}
+        className="
+          glass-card
+          p-6
+          transition-all
+          duration-300
+          hover:border-blue-500
+          hover:-translate-y-2
+          hover:shadow-[0_20px_40px_rgba(59,130,246,0.15)]
+          group
+        "
+      >
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-white font-semibold text-lg">
@@ -99,26 +108,51 @@ export default function CoursesPage() {
           </p>
         </div>
 
-        <span className="text-2xl">
+        <div
+          className="
+            w-12
+            h-12
+            rounded-xl
+            flex
+            items-center
+            justify-center
+            bg-blue-500/10
+            text-2xl
+            transition-all
+            duration-300
+            group-hover:scale-110
+          "
+        >
           📚
-        </span>
+        </div>
       </div>
 
       <p className="text-slate-400 mt-4 line-clamp-3">
         {course.description}
       </p>
 
-      <div className="flex justify-between mt-6 text-sm">
-        <span className="text-slate-500">
-          👥{" "}
-          {course.students?.length ||
-            0}
-        </span>
+      <div className="flex justify-between items-center mt-6">
 
-        <span className="text-blue-400">
-          Open →
-        </span>
-      </div>
+  <div className="flex items-center gap-2 text-slate-400 text-sm">
+    <span>👥</span>
+    <span>
+      {course.students?.length || 0} Students
+    </span>
+  </div>
+
+  <div
+    className="
+      text-blue-400
+      font-medium
+      transition-all
+      duration-300
+      group-hover:translate-x-1
+    "
+  >
+    Open →
+  </div>
+
+</div>
     </Link>
   );
 

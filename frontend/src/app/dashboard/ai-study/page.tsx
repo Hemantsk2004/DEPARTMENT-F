@@ -100,16 +100,103 @@ ${revisionNotes}
 
       {/* Header */}
 
-      <div>
-        <h1 className="text-5xl font-bold text-white">
-          AI Study Assistant
-        </h1>
+  <div
+    className="rounded-3xl p-8 border"
+    style={{
+      background:
+        "linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.08))",
+      borderColor:
+        "rgba(59,130,246,0.15)",
+    }}
+  >
+    <div className="flex items-center gap-4 mb-4">
 
-        <p className="text-slate-400 mt-3 text-lg">
-          Upload PDFs or paste notes and
-          generate summaries instantly.
-        </p>
-      </div>
+        {/* Hero */}
+
+<div
+  className="rounded-3xl p-8 border"
+  style={{
+    background:
+      "linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.08))",
+    borderColor:
+      "rgba(59,130,246,0.15)",
+  }}
+>
+  <div className="flex items-center gap-4">
+    <div
+      className="w-16 h-16 rounded-2xl flex items-center justify-center"
+      style={{
+        background:
+          "linear-gradient(135deg,#2563eb,#7c3aed)",
+        boxShadow:
+          "0 0 30px rgba(59,130,246,0.35)",
+      }}
+    >
+      <span className="text-2xl">
+        ✨
+      </span>
+    </div>
+
+    <div>
+      <h1 className="text-4xl font-bold text-white">
+        AI Study Assistant
+      </h1>
+
+      <p className="text-slate-400 mt-1">
+        Generate summaries, key points and revision notes using AI.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+  <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-center">
+    <div className="text-3xl mb-2">
+      ⚡
+    </div>
+
+    <h3 className="text-white font-semibold">
+      Instant Analysis
+    </h3>
+
+    <p className="text-slate-400 text-sm mt-1">
+      AI-powered summaries in seconds
+    </p>
+  </div>
+
+  <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-center">
+    <div className="text-3xl mb-2">
+      📚
+    </div>
+
+    <h3 className="text-white font-semibold">
+      Smart Notes
+    </h3>
+
+    <p className="text-slate-400 text-sm mt-1">
+      Extract important concepts quickly
+    </p>
+  </div>
+
+  <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-center">
+    <div className="text-3xl mb-2">
+      🎯
+    </div>
+
+    <h3 className="text-white font-semibold">
+      Revision Ready
+    </h3>
+
+    <p className="text-slate-400 text-sm mt-1">
+      Prepare efficiently for exams
+    </p>
+  </div>
+
+</div>
+    
+  </div>
+</div>
 
       {/* Input Section */}
 
@@ -124,16 +211,50 @@ ${revisionNotes}
             Upload PDF Notes
           </label>
 
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={(e) =>
-              setPdf(
-                e.target.files?.[0] || null
-              )
-            }
-            className="text-white"
-          />
+          <label
+            className="
+              block
+              border-2
+              border-dashed
+              border-slate-700
+              hover:border-blue-500
+              rounded-2xl
+              p-8
+              text-center
+              cursor-pointer
+              transition-all
+            "
+          >
+            <div className="text-4xl mb-3">
+              📄
+            </div>
+
+            <p className="text-white font-medium">
+              Upload PDF Notes
+            </p>
+
+            <p className="text-slate-400 text-sm mt-1">
+              Click to select a PDF file
+            </p>
+
+            {pdf && (
+              <p className="text-blue-400 mt-3 text-sm">
+                {pdf.name}
+              </p>
+            )}
+
+            <input
+              type="file"
+              accept=".pdf"
+              hidden
+              onChange={(e) =>
+                setPdf(
+                  e.target.files?.[0] ||
+                    null
+                )
+              }
+            />
+          </label>
         </div>
 
         <textarea
@@ -193,7 +314,19 @@ ${revisionNotes}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
 
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <div className="relative">
+            <div
+              className="w-16 h-16 rounded-full animate-pulse"
+              style={{
+                background:
+                  "rgba(59,130,246,0.2)",
+              }}
+            />
+
+            <div className="absolute inset-0 flex items-center justify-center text-2xl">
+              🤖
+            </div>
+          </div>
 
             <p className="text-slate-400 mt-4">
               AI is analyzing your notes...
@@ -203,7 +336,7 @@ ${revisionNotes}
         ) : (
           <div className="grid gap-6">
 
-            <div className="bg-slate-950 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-slate-950 border border-slate-700 rounded-2xl p-6 transition-all duration-300 hover:border-blue-500/40 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-blue-400 mb-3">
                 Summary
               </h3>
@@ -214,7 +347,7 @@ ${revisionNotes}
               </p>
             </div>
 
-            <div className="bg-slate-950 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-slate-950 border border-slate-700 rounded-2xl p-6 transition-all duration-300 hover:border-blue-500/40 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-green-400 mb-3">
                 Key Points
               </h3>
@@ -225,7 +358,7 @@ ${revisionNotes}
               </pre>
             </div>
 
-            <div className="bg-slate-950 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-slate-950 border border-slate-700 rounded-2xl p-6 transition-all duration-300 hover:border-blue-500/40 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-yellow-400 mb-3">
                 Revision Notes
               </h3>

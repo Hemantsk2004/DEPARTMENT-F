@@ -49,17 +49,33 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6 max-w-3xl">
       {/* Header */}
-      <div>
-        <h1 style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }} className="text-2xl font-bold mb-1">
+      <div
+        className="glass-card p-8"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(59,130,246,0.08), rgba(15,23,42,0.9))",
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: "'Syne', sans-serif",
+            color: "#f1f5f9",
+          }}
+          className="text-3xl font-bold"
+        >
           My Profile
         </h1>
-        <p style={{ color: "#475569" }} className="text-sm">
-          Manage your account information
+
+        <p
+          style={{ color: "#64748b" }}
+          className="mt-2"
+        >
+          Manage your account information and track your academic journey.
         </p>
       </div>
 
       {/* Profile card */}
-      <div className="glass-card p-6 flex items-center gap-5">
+      <div className=" glass-card  p-8  flex  items-center  gap-6  transition-all duration-300 hover:border-blue-500/30">
         <div
           style={{ background: "#1d4ed8", width: 72, height: 72, borderRadius: "50%", flexShrink: 0 }}
           className="flex items-center justify-center text-white text-2xl font-bold"
@@ -79,17 +95,65 @@ export default function ProfilePage() {
           >
             {user?.role}
           </span>
+          <p className="text-slate-500 text-sm mt-3">
+            Member of CampusLink X
+          </p>
         </div>
       </div>
 
+    <div className="grid md:grid-cols-3 gap-4">
+
+      <div className="glass-card p-5">
+        <p className="text-slate-500 text-sm">
+          Role
+        </p>
+
+        <p className="text-white text-xl font-bold mt-2 capitalize">
+          {user?.role}
+        </p>
+      </div>
+
+      <div className="glass-card p-5">
+        <p className="text-slate-500 text-sm">
+          Account Status
+        </p>
+
+        <p className="text-green-400 text-xl font-bold mt-2">
+          Active
+        </p>
+      </div>
+
+      <div className="glass-card p-5">
+        <p className="text-slate-500 text-sm">
+          Platform
+        </p>
+
+        <p className="text-blue-400 text-xl font-bold mt-2">
+          CampusLink X
+        </p>
+      </div>
+
+    </div>
       {/* Edit form */}
       <div className="glass-card p-6">
-        <h3
-          style={{ fontFamily: "'Syne', sans-serif", color: "#f1f5f9" }}
-          className="text-base font-semibold mb-5"
-        >
-          Edit Information
-        </h3>
+        <div className="mb-6">
+
+          <h3
+            style={{
+              fontFamily:
+                "'Syne', sans-serif",
+              color: "#f1f5f9",
+            }}
+            className="text-xl font-semibold"
+          >
+            Personal Information
+          </h3>
+
+          <p className="text-slate-500 text-sm mt-1">
+            Update your profile details.
+          </p>
+
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500 }} className="block mb-1.5">
