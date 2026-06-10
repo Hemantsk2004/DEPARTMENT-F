@@ -4,27 +4,59 @@ import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 
+interface RegisterFormData {
+  name: string;
+  email: string;
+  password: string;
+  role: "student" | "lecturer";
+}
+
 export default function RegisterPage() {
   const { register } = useAuth();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "student",
-  });
-  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] =
+    useState<RegisterFormData>({
+      name: "",
+      email: "",
+      password: "",
+      role: "student",
+    });
+
+  const [loading, setLoading] =
+    useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement
+    >
   ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === "role"
+          ? (value as
+              | "student"
+              | "lecturer")
+          : value,
+    }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (
+    e: React.FormEvent
+  ) => {
     e.preventDefault();
+
     setLoading(true);
+
     try {
-      await register(formData.name, formData.email, formData.password, formData.role);
+      await register(
+        formData.name,
+        formData.email,
+        formData.password,
+        formData.role
+      );
     } finally {
       setLoading(false);
     }

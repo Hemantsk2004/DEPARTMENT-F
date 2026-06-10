@@ -33,17 +33,20 @@ export default function AIStudyPage() {
 
       const aiText = response.data;
 
-      const summaryMatch = aiText.match(
-        /SUMMARY:(.*?)KEY POINTS:/s
-      );
+      const summaryMatch =
+        aiText.match(
+          /SUMMARY:([\s\S]*?)KEY POINTS:/
+        );
 
-      const keyPointsMatch = aiText.match(
-        /KEY POINTS:(.*?)REVISION NOTES:/s
-      );
+      const keyPointsMatch =
+        aiText.match(
+          /KEY POINTS:([\s\S]*?)REVISION NOTES:/
+        );
 
-      const revisionMatch = aiText.match(
-        /REVISION NOTES:(.*)/s
-      );
+      const revisionMatch =
+        aiText.match(
+          /REVISION NOTES:([\s\S]*)/
+        );
 
       setSummary(
         summaryMatch?.[1]?.trim() || ""

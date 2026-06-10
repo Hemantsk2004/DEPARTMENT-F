@@ -43,8 +43,6 @@ export default function UploadMaterialPage() {
         title,
         courseId: id,
         file,
-        uploadedBy: user?._id,
-        uploadedAt: Date(),
       });
       toast.success("Material uploaded successfully!");
       router.push(`/dashboard/courses/${id}`);
